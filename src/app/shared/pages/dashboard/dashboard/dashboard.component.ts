@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
   loans : any ;
 
   
-displayedColumns: string[] = ['date','client','total',];
+displayedColumns: string[] = ['date','client','address','total',];
 dataTableActive : any = new MatTableDataSource<any>();
 
 // end search
