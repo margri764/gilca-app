@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wrong-action-message',
@@ -7,9 +9,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WrongActionMessageComponent implements OnInit {
 
-  constructor() { }
+  confirm : boolean = false;
+  msg : string = 'Error en la acción'
+
+  constructor( 
+              private dialogRef : MatDialogRef<WrongActionMessageComponent>,
+              @Inject(MAT_DIALOG_DATA) private data: any,
+              private router : Router
+              )
+   { }
 
   ngOnInit(): void {
+    this.msg = this.data;
+    
+  }
+
+  continue(){
+    this.confirm = true;
+    setTimeout(()=>{ this.dialogRef.close() },300);
+
+    if(this.msg === 'Parece en error involuntario. Contacte al administrador'){
+      this.router.navigateByUrl('/login');
+      return
+    }
+    
   }
 
 }

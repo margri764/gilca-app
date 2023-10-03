@@ -43,42 +43,19 @@ export class AuthService {
 
   getUserLoanById( id:string ){
 
-    // const loan = [
-    //   {
-    //       "_id": "651b8ba7b011916617f386c0",
-    //       "user": {
-    //           "_id": "651b761142f9913f316a6ad8",
-    //           "name": "Fernando",
-    //           "lastName": "Perez",
-    //           "password": "$2a$10$p.lGlArHTr/T8unfGQs2vu3sd1jjlwlOUjADvqv54e8.7po4j.qKC",
-    //           "email": "test2@gmail.com",
-    //           "clientNumber": "NREV1447",
-    //           "activeLoan": true,
-    //           "address": "Avenida Mariscal 3424",
-    //           "phone": " 22408143",
-    //           "state": true,
-    //           "createdAt": "2023-10-03T02:01:53.980Z",
-    //           "updatedAt": "2023-10-03T02:01:53.980Z",
-    //           "__v": 0
-    //       },
-    //       "closedDate": null,
-    //       "amount": 6500,
-    //       "description": "cliente preferencial - recurrente",
-    //       "status": "pendiente",
-    //       "createdAt": "2023-10-03T03:33:59.665Z",
-    //       "updatedAt": "2023-10-03T03:33:59.665Z"
-    //   }
-    // ]
-
-    // return loan
     return this.http.get<any>(`${this.baseUrl}api/loan/${id}`) 
       
     .pipe(
-      tap( (  ) =>{
-                      
-                }  
-      ),            
       map( res => {console.log("desde getUserLoanById Service: ",res); return res} )
+    )
+  }
+
+  getAllLoans(  ){
+
+    return this.http.get<any>(`${this.baseUrl}api/loan`) 
+      
+    .pipe(
+      map( res => {console.log("desde getAllLoans Service: ",res); return res} )
     )
   }
 

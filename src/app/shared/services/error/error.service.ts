@@ -3,6 +3,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { WrongActionMessageComponent } from '../../messages/wrong-action-message/wrong-action-message/wrong-action-message.component';
 
 @Injectable({
   providedIn: 'root'
@@ -106,9 +107,7 @@ export class ErrorService {
 
     if (error.status === 400 ) {
       this.closeIsLoading$.emit(true);
-      alert(error.error.message)
-      // ojo esto va en duro en el componente para redirigir al login!!
-      // this.openGenericMsgAlert('Parece en error involuntario. Contacte al administrador')
+      this.openGenericMsgAlert(error.error.message)
       return of(null);
     }
 
@@ -162,13 +161,13 @@ export class ErrorService {
       height ="400px";
     }
 
-    // this.dialog.open(WrongActionMessageComponent, {
-    //   data: msg,
-    //   width: `${width}`|| "",
-    //   height:`${height}`|| "",
-    //   // disableClose: true,
-    //   panelClass:"custom-modalbox-NoMoreComponent", 
-    // });
+    this.dialog.open(WrongActionMessageComponent, {
+      data: msg,
+      width: `${width}`|| "",
+      height:`${height}`|| "",
+      // disableClose: true,
+      panelClass:"custom-modalbox-NoMoreComponent", 
+    });
   
   }
 

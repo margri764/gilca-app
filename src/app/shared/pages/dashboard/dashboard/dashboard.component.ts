@@ -1,7 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subject, debounceTime } from 'rxjs';
+import { GenericSuccessComponent } from 'src/app/shared/messages/generic-success/generic-success/generic-success.component';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
+import { ValidatorsService } from 'src/app/shared/services/validators/validators.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,8 +21,11 @@ export class DashboardComponent implements OnInit {
   @Output() onDebounce: EventEmitter<string> = new EventEmitter();
   @Output() onEnter   : EventEmitter<string> = new EventEmitter();
   debouncer: Subject<string> = new Subject();
-  myForm!: FormGroup;
+  myForm: FormGroup;
   myFormInput!: FormGroup;
+  debt : boolean = true;
+  payment : boolean = false;
+  public positiveNumberPattern: string = '^[1-9][0-9]*$';
 
   itemSearch : string = '';
   mostrarSugerencias: boolean = false;
@@ -36,6 +43,11 @@ export class DashboardComponent implements OnInit {
   labelNoFinded : boolean = false;
   phone : boolean = false;
   noMatches : boolean = false;
+  loans : any ;
+
+  
+displayedColumns: string[] = ['date','client','total',];
+dataTableActive : any = new MatTableDataSource<any>();
 
 // end search
 
@@ -43,7 +55,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(
                 private fb: FormBuilder,
-                private authService : AuthService
+                private authService : AuthService,
+                private dialog : MatDialog,
+                private validatorService : ValidatorsService
   ) { 
 
     (screen.width <= 800) ? this.phone = true : this.phone = false;
@@ -53,13 +67,17 @@ export class DashboardComponent implements OnInit {
     });  
 
     this.myFormInput = this.fb.group({
-      amount:  [ '' ],
-    });  
+      amount: ['', ]
+    });
+
+    
+  
 
   }
 
   ngOnInit(): void {
-    this.Search(this.fade);
+
+    this.getAllLoans();
      //para las busquedas
      this.myForm.get('itemSearch')?.valueChanges.subscribe(newValue => {
       this.itemSearch = newValue;
@@ -77,25 +95,38 @@ export class DashboardComponent implements OnInit {
       this.sugerencias(valor);
     });
 
-    
-
+ 
   }
+
 
   onSubmit(client : any){
 
-    console.log(client);
+    if ( this.myForm.invalid ) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
     const amount = this.myFormInput.get('amount')?.value;
-    console.log(amount);
+    if(amount <= 0){
+      this.myFormInput.get('amount')?.setValue('');
+      return
+    }
 
     this.authService.registerPayment(client, amount).subscribe(
       ({success})=>{
         if(success){
-          alert('Pago registrado con éxito')
-
+          this.getAllLoans();
+          this.myFormInput.get('amount')?.setValue('');
+          this.openGenericSuccess('Pago registrado con éxito')
+          
         }
       })
     
 
+  }
+
+     validField( field: string ) {
+      const control = this.myForm.controls[field];
+      return control && control.errors && control.touched;
   }
 
 
@@ -110,12 +141,10 @@ close(){
   this.noMatches = false;
 }
 
-
 teclaPresionada(){
   this.noMatches = false;
   this.debouncer.next( this.itemSearch );  
-};
-
+}
 
 sugerencias(value : string){
     this.spinner = true;
@@ -144,17 +173,77 @@ Search( item: any ){
     console.log(item);
     this.authService.getUserLoanById(item._id).subscribe( 
       ({loan})=>{
-      // this.clientFounded = this.authService.getUserLoanById(item._id) 
-    this.isClientFounded = true;
-    this.clientFounded = loan;
-    let amount;
-     this.clientFounded.forEach((item)=>{amount = item.amount})
-    this.myFormInput.get('amount')?.setValue(amount)
-    console.log(this.clientFounded);
+              this.isClientFounded = true;
+              this.clientFounded = loan;
+              let amount;
+              this.clientFounded.forEach((item)=>{amount = item.amount})
+              // this.myFormInput.get('amount')?.setValue(amount)
+              console.log(this.clientFounded);
     
     // this.close();
   })
 }
   // search
 
+  selectOption( option:string){
+
+    switch (option) {
+      case 'payment':
+                    this.payment = true;
+                    this.debt = false;
+                    this.getPayment();
+        break;
+
+      case 'debt':
+                  this.debt = true;
+                  this.payment = false;
+       break;
+    
+      default:
+        break;
+    }
+  }
+
+
+  getAllLoans(){
+    this.isLoading = true;
+    this.authService.getAllLoans().subscribe(
+      ({loans})=>{
+        this.loans = loans;
+        this.isLoading = false;
+        this.search = true;
+      })
+  }
+
+  getPayment(){
+    this.isLoading = true;
+    this.authService.getAllLoans().subscribe(
+      ({loans})=>{
+        this.dataTableActive = loans
+        this.isLoading = false;
+        this.search = true;
+      })
+  }
+
+
+
+  openGenericSuccess(msg : string){
+
+    let width : string = '';
+    let height : string = '';
+
+    if(screen.width >= 800) {
+      width = "400px"
+      height ="450px";
+    }
+
+    this.dialog.open(GenericSuccessComponent, {
+      data: msg,
+      width: `${width}`|| "",
+      height:`${height}`|| "",
+      disableClose: true,
+      panelClass:"custom-modalbox-NoMoreComponent", 
+    });
+  
+  }
 }

@@ -26,3 +26,71 @@
     font-weight: bold; /* Fuente en negrita para el símbolo de la moneda */
   }
   
+
+  
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: rgb(37, 150, 190);
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+  color: rgb(37, 150, 190);
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  color: rgb(37, 150, 190)!important;
+
+}
+
+::ng-deep .mat-slide-toggle.mat-disabled .mat-slide-toggle-bar {
+  color: rgb(37, 150, 190) !important;
+
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  color: rgb(37, 150, 190) !important;
+
+}
+
+.example-container {
+    width: 100%;
+    // height: calc(100vh - 450px);
+    overflow: auto;
+    font-size: 1.8em;
+    font-family: 'poppins-light'; 
+  }
+  
+  
+  table {
+    font-size: 0.8em;
+    font-family: 'poppins-light'; 
+  }
+  
+  .mat-column-id {
+    width: 10%;
+    text-align: center;
+  }
+  
+  .mat-column-socialName {
+    width: 20%;
+    cursor: pointer;
+    text-align: start;
+  }
+  
+  .mat-column-item {
+    width: 60%;
+    cursor: pointer;
+    text-align: center ;
+    padding: 3px;
+  
+  }
+
+  img{
+    width: 70px;
+    cursor: pointer;
+  }
+  
+  .non-class{
+  opacity: 0;
+  }
+
+

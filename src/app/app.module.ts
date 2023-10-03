@@ -20,6 +20,12 @@ import { InterceptorService } from './shared/services/interceptor/interceptor.se
 
 // pipes
 import { CapitalizeFirstLetterPipe } from './shared/pages/pipes/CapitalizeFirstLetter';
+import { TwoDecimalPipe } from './shared/pages/pipes/twoDecimal';
+
+//lenguaje
+import localeEs from '@angular/common/locales/es-AR'; //nombre inventado el AR es por Argentina
+import { registerLocaleData } from '@angular/common';
+registerLocaleData( localeEs );
 
 @NgModule({
   declarations: [
@@ -30,7 +36,8 @@ import { CapitalizeFirstLetterPipe } from './shared/pages/pipes/CapitalizeFirstL
     WrongActionMessageComponent,
     GenericSuccessComponent,
     DashboardComponent,
-    CapitalizeFirstLetterPipe
+    CapitalizeFirstLetterPipe,
+    TwoDecimalPipe
   ],
   imports: [
     BrowserModule,

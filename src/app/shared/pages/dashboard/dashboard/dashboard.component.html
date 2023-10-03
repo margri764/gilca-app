@@ -3,21 +3,37 @@
 
 
 <div  fxLayout="row wrap"  fxLayoutAlign="center start" fxFlex="100" >
-    
-    <div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex.xs="97" fxFlex.sm="95" fxFlex="85" >
 
-        <div  fxLayout="row wrap"  fxLayoutAlign.xs="space-between center" fxLayoutAlign="start center" fxFlex="97" style="margin-top: 30px;">
+    <div  fxLayout="row wrap"  fxLayoutAlign="start start" fxFlex="97" style="margin-top: 30px;">
+        <span class="material-icons">auto_graph</span> &nbsp;
+        <span class="font" style="text-align: start; font-size: 1.2em;"><b> Cuentas por cobrar / cobros</b></span>
+    </div>
+
+    
+    <!-- <div  fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex.xs="97" fxFlex.sm="95" fxFlex="85" > -->
+
+        <div  fxLayout="row wrap" fxLayoutAlign="center center" fxFlex="97" style="margin-top: 30px;">
 
             <!-- start form -->
-            <form  [formGroup]="myForm" autocomplete="off" style="margin-top: 24px;" > 
-                <mat-form-field  appearance="outline" class="font fs-4" >
-                    <input type="text" matInput  placeholder="Buscar cliente"  name="itemSearch" formControlName="itemSearch">
+            <form  [formGroup]="myForm" autocomplete="off" style="margin-top: 24px;" fxFlex.xs="97" fxFlex="50" > 
+                <mat-form-field  appearance="outline" class="font fs-4" fxFlex="100">
+                    <input type="text" matInput  placeholder="Buscar cliente"  name="itemSearch" formControlName="itemSearch" >
                     <mat-icon matSuffix style="transform:scale(1.5); color: rgb(37, 150, 190); margin-right: 10px;" >search</mat-icon>
                 </mat-form-field>
             </form>
 
             <!-- end form -->
         </div>  
+
+        <div  fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="97" style="margin-top: 30px;">
+
+            <button mat-raised-button style=" border-radius: 17px !important; margin-top: 30px; width: 200px; margin-bottom: 15px; line-height: 50px; z-index: 999; " class="font" [ngClass]="debt ? 'btnMenuClicked':'btnMenu'" (click)="selectOption('debt')">
+            Cuentas por cobrar
+            </button>
+            <button mat-raised-button style="border-radius: 17px !important; margin-top: 30px; width: 200px; margin-bottom: 15px; line-height: 50px;     transform: translateX(-25px);" class="font" class="font" [ngClass]="payment ? 'btnMenuClicked':'btnMenu'" (click)="selectOption('payment')">
+                Cobros a clientes
+                </button>
+        </div>
 
         <!-- start no items -->
         <div fxLayout="row wrap"  fxLayoutAlign="center center" fxFlex="100"  *ngIf="noMatches" >
@@ -32,9 +48,6 @@
         <!-- end no items -->
 
         
-
-
-
         <!-- start suggested    -->
         <div fxLayout="row wrap"  fxLayoutAlign.xs="start center" fxLayoutAlign="center center"  fxFlex="100" *ngIf="mostrarSugerencias" style="padding: 20px;" >
                 
@@ -52,57 +65,90 @@
         </div>
         <!-- end suggested    -->
 
-        <!-- *ngIf="isClientFounded" -->
-        <!-- start result search cards -->
-           
-            <div fxLayout="row wrap"  fxLayoutAlign="center center" style="margin-bottom: 30px;  padding: 10px; background-color: white; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;" fxFlex.xs="97" fxFlex.sm="45" fxFlex="45" class="whiteframe"  *ngFor="let client of clientFounded">
+        <ng-container *ngIf="debt">
+
+                <!-- start result search cards -->
+                <div fxLayout="row wrap"  fxLayoutAlign="center center"  fxFlex="100"  *ngIf="search" style="margin-top: 50px;">
+                    
+                        <div fxLayout="row wrap"  fxLayoutAlign="center center" style="margin-bottom: 30px;  padding: 10px; background-color: white; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;" fxFlex.xs="97" fxFlex.sm="45" fxFlex="45" class="whiteframe"  *ngFor="let client of loans; let i = index">
 
 
-                <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="" >
+                    <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="" >
 
-                        <div  fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="46" style="" class="font" >
-                            <span class="material-icons notranslate"> <span class="material-icons">
-                                account_circle
-                                </span></span>
-                            <span  style=" text-align: start; margin-left: 15px; color: rgb(8, 8, 113); font-weight: bolder;">{{ client.user.name | capitalizeFirstLetter}}</span> &nbsp;
-                            <span  style="text-align: start; color: rgb(8, 8, 113); font-weight: bolder;" >{{ client.user.lastName | capitalizeFirstLetter}}</span> 
+                            <div  fxLayout="row wrap"  fxLayoutAlign="start center" fxFlex="46" style="" class="font" >
+                                <span class="material-icons notranslate"> <span class="material-icons">
+                                    account_circle
+                                    </span></span>
+                                <span  style=" text-align: start; margin-left: 15px; color: rgb(8, 8, 113); font-weight: bolder;">{{ client.user.name | capitalizeFirstLetter}}</span> &nbsp;
+                                <span  style="text-align: start; color: rgb(8, 8, 113); font-weight: bolder;" >{{ client.user.lastName | capitalizeFirstLetter}}</span> 
+                            </div>
+
+                            <span class="material-icons notranslate" fxFlex="8"> menu</span>
+
+                            <div  fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="46" style="" >
+                                <span  style=" text-align: end;  color: rgb(0, 0, 146);"> <b>Prestamos activos</b></span> 
+                            </div>
+                    </div>
+
+                    <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 10px;" >
+                        <span  >No. Cliente: &nbsp; <b style="color: rgb(8, 8, 113);"> {{client.user.clientNumber}}</b></span>
+                        <button mat-raised-button style="background-color: rgb(8, 8, 113); color: white; border-radius: 10px;">
+                            <span class="material-icons notranslate"> money</span> &nbsp; {{client.amount}}Bs.
+                        </button>
+                    </div>
+
+                    <form [formGroup]="myFormInput" autocomplete="off"  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="95" style="margin-top: 50px;" class="font">
+                        <span  style=" text-align: end;  color: rgb(8, 8, 113);"> <b>Total a cobrar: </b></span> 
+                        <div class="input-container">
+                            <input type="number" class="custom-input font" style="color: #aaaaaa" formControlName="amount" [pattern]="positiveNumberPattern">
+                            <div class="currency-symbol" style="background-color: white !important;">Bs.</div>
                         </div>
+                        <div *ngIf="myFormInput.get('amount')?.hasError('pattern')" style="color: red; font-size: 0.9em;margin-top: 5px;" class="font">
+                            Ingresa un número positivo mayor a 0.
+                          </div>
 
-                        <span class="material-icons notranslate" fxFlex="8"> menu</span>
+                    </form>
 
-                        <div  fxLayout="row wrap"  fxLayoutAlign="end center" fxFlex="46" style="" >
-                            <span  style=" text-align: end;  color: rgb(0, 0, 146);"> <b>Prestamos activos</b></span> 
-                        </div>
-                </div>
-
-                <div  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="100" style="margin-top: 10px;" >
-                    <span  >No. Cliente: &nbsp; <b style="color: rgb(8, 8, 113);"> {{client.user.clientNumber}}</b></span>
-                    <button mat-raised-button style="background-color: rgb(8, 8, 113); color: white; border-radius: 10px;">
-                        <span class="material-icons notranslate"> money</span> &nbsp; {{client.amount}}Bs.
+                    <button mat-raised-button style="background-color: rgb(0, 119, 255); color: white; border-radius: 17px; margin-top: 30px; width: 160px; margin-bottom: 15px;" (click)="onSubmit(client)">
+                        Registrar cobro
                     </button>
+
+
+                        </div>
                 </div>
-
-                <form [formGroup]="myFormInput" autocomplete="off"  fxLayout="row wrap"  fxLayoutAlign="space-between center" fxFlex="95" style="margin-top: 50px;" class="font">
-                    <span  style=" text-align: end;  color: rgb(8, 8, 113);"> <b>Total a cobrar: </b></span> 
-                    <div class="input-container">
-                        <input type="number" class="custom-input font"style="color: #ccc" formControlName="amount" >
-                        <div class="currency-symbol" style="background-color: white !important;">Bs.</div>
-                      </div>
-
-                </form>
-
-                <button mat-raised-button style="background-color: rgb(0, 119, 255); color: white; border-radius: 17px; margin-top: 30px; width: 160px; margin-bottom: 15px;" (click)="onSubmit(client)">
-                    Registrar cobro
-                </button>
-
-        
-        </div>
-        <!-- end result search cards -->
-
-        <ng-container *ngIf="phone">
-
-         
+                <!-- end result search cards -->
         </ng-container>
+
+        <ng-container *ngIf="payment">
+            
+            <!-- <span class="font" style="font-size: 1em; text-align: start;" fxFlex="99">Cantidad de ordenes: {{arrOrders.length}}</span>
+            <span class="font" style="font-size: 1em; text-align: start;" fxFlex="99">Importe total: &nbsp; ${{total | decimalRound}}</span> -->
+    <div class="example-container mat-elevation-z8 font mt-30" fxFlex="99">
+    
+        <table mat-table [dataSource]="dataTableActive" style="width: 100%;">
+    
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef > Fecha </th>
+                <td mat-cell *matCellDef="let element" > {{element.closedDate | date}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="client">
+                <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                <td mat-cell *matCellDef="let element"  style="font-size: 0.6em;"> <span style="text-align: start;"> {{element.user.name }} </span> </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="total" >
+                <th mat-header-cell *matHeaderCellDef > Total </th>
+                <td mat-cell *matCellDef="let element" style="font-size: 0.6em;" > <span style="text-align: start;">  {{element.extensionTelefono}}{{element.amount | decimalRound}} </span> </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+        </ng-container>
+
   
  <div *ngIf="isLoading" class="loading-overlay">
     <mat-spinner diameter="80"></mat-spinner>
