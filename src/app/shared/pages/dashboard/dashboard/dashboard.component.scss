@@ -63,6 +63,7 @@
   table {
     font-size: 0.8em;
     font-family: 'poppins-light'; 
+    width: 100%;
   }
   
   .mat-column-id {
@@ -92,5 +93,48 @@
   .non-class{
   opacity: 0;
   }
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 800px) {
+
+
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 800px) {
+
+
+  .example-container {
+    height: calc(100vh - 390px);
+
+  }
+
+  }
+
+  
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 1200px) {
+
+  .example-container {
+    height: calc(100vh - 390px);
+
+  }
+
+  mat-ble{
+    width: 80%;
+  }
+  
+  
+}
+
+//Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 1400px) {
+
+  .example-container {
+    height: calc(100vh - 350px);
+
+  }
+
+}
 
 

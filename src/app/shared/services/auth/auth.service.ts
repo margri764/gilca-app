@@ -50,7 +50,7 @@ export class AuthService {
     )
   }
 
-  getAllLoans(  ){
+  getAllLoans( ){
 
     return this.http.get<any>(`${this.baseUrl}api/loan`) 
       
@@ -58,6 +58,16 @@ export class AuthService {
       map( res => {console.log("desde getAllLoans Service: ",res); return res} )
     )
   }
+
+  getPayments(  ){
+
+    return this.http.get<any>(`${this.baseUrl}api/loan/payment`) 
+      
+    .pipe(
+      map( res => {console.log("desde getPayments Service: ",res); return res} )
+    )
+  }
+
 
   searchUser( query:string ){
     return this.http.get<any>(`${this.baseUrl}api/search?userSearch=${query}`) 

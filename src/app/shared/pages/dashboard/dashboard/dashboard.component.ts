@@ -217,7 +217,7 @@ Search( item: any ){
 
   getPayment(){
     this.isLoading = true;
-    this.authService.getAllLoans().subscribe(
+    this.authService.getPayments().subscribe(
       ({loans})=>{
         this.dataTableActive = loans
         this.isLoading = false;
